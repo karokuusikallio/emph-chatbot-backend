@@ -23,10 +23,11 @@ userRouter.get("/me", async (request: Request, response: Response) => {
       userName: verifiedToken.username,
       userId: verifiedToken.userId,
       issuedAt: verifiedToken.issuedAt,
+      loggedIn: true,
     });
   }
 
-  return response.status(400).json({ error: "no valid auth token" });
+  return response.status(200).json({ loggedIn: false });
 });
 
 userRouter.post("/", async (request: Request, response: Response) => {

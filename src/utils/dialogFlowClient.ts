@@ -8,7 +8,10 @@ async function runDialogFlowQuery(query: string) {
   const languageCode = "en";
 
   const client = new SessionsClient({
-    keyFile: "empathetic-chatbot-369609-8dd74fc860c4.json",
+    keyFile:
+      process.env.NODE_ENV === "production"
+        ? JSON.parse(process.env.DIALOGFLOW_PRIVATE_KEY as string)
+        : "empathetic-chatbot-369609-8dd74fc860c4.json",
   });
 
   const sessionId = uuidv4();

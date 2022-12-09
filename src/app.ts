@@ -1,6 +1,8 @@
 import express from "express";
 const app = express();
 require("express-async-errors");
+import compression from "compression";
+import helmet from "helmet";
 import conversateRouter from "./controllers/conversate";
 import userRouter from "./controllers/user";
 import loginRouter from "./controllers/login";
@@ -11,6 +13,8 @@ import { PrismaClient } from "@prisma/client";
 export const prisma = new PrismaClient();
 
 app.use(express.json());
+app.use(compression());
+app.use(helmet());
 
 app.use("/api/conversate", conversateRouter);
 app.use("/api/user", userRouter);

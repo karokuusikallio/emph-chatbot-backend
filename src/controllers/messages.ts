@@ -58,4 +58,30 @@ messagesRouter.post("/", async (request: Request, response: Response) => {
   return response.status(400).json({ error: "Invalid message text or sender" });
 });
 
+messagesRouter.delete("/", async (request: Request, response: Response) => {
+  const token = request.get("auth-token");
+
+  if (token) {
+    const verifiedToken = jwt.verify(
+      token as string,
+      process.env.JWT_SECRET as string
+    ) as VerifiedToken;
+
+    if (verifiedToken) {
+      await prisma.message.deleteMany({
+        where: {
+          userId: verifiedToken.userId,
+        },
+      });
+      return response.status(200).end();
+    }
+
+    if (!verifiedToken) {
+      return response.status(400).json({ error: "Invalid auth token." });
+    }
+  }
+
+  return response.status(400).json({ error: "No auth token." });
+});
+
 export default messagesRouter;
