@@ -1,4 +1,9 @@
 node_modules
 .env
-build
 empathetic-chatbot-369609-8dd74fc860c4.json
+.elasticbeanstalk
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
