@@ -26,7 +26,11 @@ messagesRouter.get("/", async (request: Request, response: Response) => {
       });
       return response.status(200).json(messages);
     }
+
+    return response.status(400).json({ error: "Auth token not valid." });
   }
+
+  return response.status(400).json({ error: "No auth token provided." });
 });
 
 messagesRouter.post("/", async (request: Request, response: Response) => {
@@ -50,9 +54,7 @@ messagesRouter.post("/", async (request: Request, response: Response) => {
       return response.status(200).json(messageCreated);
     }
 
-    if (!verifiedToken) {
-      return response.status(400).json({ error: "Missing valid token." });
-    }
+    return response.status(400).json({ error: "Missing valid token." });
   }
 
   return response.status(400).json({ error: "Invalid message text or sender" });
@@ -76,9 +78,7 @@ messagesRouter.delete("/", async (request: Request, response: Response) => {
       return response.status(200).end();
     }
 
-    if (!verifiedToken) {
-      return response.status(400).json({ error: "Invalid auth token." });
-    }
+    return response.status(400).json({ error: "Invalid auth token." });
   }
 
   return response.status(400).json({ error: "No auth token." });

@@ -32,9 +32,12 @@ async function runDialogFlowQuery(query: string) {
     },
   };
 
-  const response = await client.detectIntent(request);
-
-  return response;
+  try {
+    const response = await client.detectIntent(request);
+    return response;
+  } catch (error) {
+    return error;
+  }
 }
 
 export default runDialogFlowQuery;

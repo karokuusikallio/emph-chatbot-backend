@@ -33,30 +33,36 @@ userRouter.get("/me", async (request: Request, response: Response) => {
 userRouter.post("/", async (request: Request, response: Response) => {
   const { username, password } = request.body;
 
-  const userExists = await prisma.user.findUnique({
-    where: {
-      userName: username,
-    },
-  });
+  if (username && password) {
+    const userExists = await prisma.user.findUnique({
+      where: {
+        userName: username,
+      },
+    });
 
-  if (userExists) {
-    return response.status(400).json({ error: "User already exists." });
+    if (userExists) {
+      return response.status(400).json({ error: "User already exists." });
+    }
+
+    const saltRounds = 10;
+
+    const passwordHash = await bcrypt.hash(password, saltRounds);
+
+    const userCreated = await prisma.user.create({
+      data: {
+        userName: username,
+        passwordHash,
+      },
+    });
+
+    const userForResponse = { username: userCreated.userName };
+
+    return response.status(200).json(userForResponse);
   }
 
-  const saltRounds = 10;
-
-  const passwordHash = await bcrypt.hash(password, saltRounds);
-
-  const userCreated = await prisma.user.create({
-    data: {
-      userName: username,
-      passwordHash,
-    },
-  });
-
-  const userForResponse = { username: userCreated.userName };
-
-  return response.status(200).json(userForResponse);
+  return response
+    .status(400)
+    .json({ error: "Please provide username and password." });
 });
 
 export default userRouter;

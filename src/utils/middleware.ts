@@ -7,8 +7,6 @@ const unknownEndpoint = (request: Request, response: Response) => {
 
 const errorHandler: ErrorRequestHandler = (error, request, response, next) => {
   logger.error(error.message);
-
-  next(error);
 };
 const middleware = {
   unknownEndpoint,
