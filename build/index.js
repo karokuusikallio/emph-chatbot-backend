@@ -9,6 +9,7 @@ const http_1 = __importDefault(require("http"));
 const logger_1 = __importDefault(require("./utils/logger"));
 const server = http_1.default.createServer(app_1.default);
 server.listen(config_1.default.PORT, () => {
+    console.log(process.env.NODE_ENV);
     logger_1.default.info(`Server running on port ${config_1.default.PORT}`);
 });
 //# sourceMappingURL=index.js.map
