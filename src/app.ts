@@ -9,12 +9,17 @@ import loginRouter from "./controllers/login";
 import messagesRouter from "./controllers/messages";
 import middleware from "./utils/middleware";
 import { PrismaClient } from "@prisma/client";
+import cors from "cors";
 
 export const prisma = new PrismaClient();
 
+app.use(cors());
+app.use(express.static("build"));
 app.use(express.json());
 app.use(compression());
 app.use(helmet());
+app.use(middleware.requestLogger);
+app.use(middleware.responseLogger);
 
 app.use("/api/conversate", conversateRouter);
 app.use("/api/user", userRouter);
