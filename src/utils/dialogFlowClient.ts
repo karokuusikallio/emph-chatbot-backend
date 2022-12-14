@@ -10,7 +10,7 @@ async function runDialogFlowQuery(query: string) {
   const client = new SessionsClient({
     keyFile:
       process.env.NODE_ENV === "production"
-        ? JSON.parse(process.env.DIALOGFLOW_PRIVATE_KEY as string)
+        ? process.env.DIALOGFLOW_PRIVATE_KEY
         : "empathetic-chatbot-369609-8dd74fc860c4.json",
   });
 
@@ -34,6 +34,7 @@ async function runDialogFlowQuery(query: string) {
 
   try {
     const response = await client.detectIntent(request);
+    console.log(response);
     return response;
   } catch (error) {
     return error;
