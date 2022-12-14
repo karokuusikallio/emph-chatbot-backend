@@ -19,7 +19,6 @@ app.use(express.json());
 app.use(compression());
 app.use(helmet());
 app.use(middleware.requestLogger);
-app.use(middleware.responseLogger);
 
 app.use("/api/conversate", conversateRouter);
 app.use("/api/user", userRouter);

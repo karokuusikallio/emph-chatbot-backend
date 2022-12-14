@@ -32,9 +32,11 @@ async function runDialogFlowQuery(query: string) {
     },
   };
 
+  console.log(request.session);
+  console.log(request.queryInput.text.text);
+
   try {
     const response = await client.detectIntent(request);
-    console.log(response);
     return response;
   } catch (error) {
     return error;
