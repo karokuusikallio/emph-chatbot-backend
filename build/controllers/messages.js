@@ -34,15 +34,16 @@ messagesRouter.get("/", (request, response) => __awaiter(void 0, void 0, void 0,
 }));
 messagesRouter.post("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const token = request.get("auth-token");
-    const { text, sender } = request.body;
+    const { text, sender, createdAt } = request.body;
     if (token) {
         const verifiedToken = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
-        if (verifiedToken && text && sender) {
+        if (verifiedToken && text && sender && createdAt) {
             const messageCreated = yield app_1.prisma.message.create({
                 data: {
                     userId: verifiedToken.userId,
                     text,
                     sender,
+                    createdAt,
                 },
             });
             return response.status(200).json(messageCreated);
