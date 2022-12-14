@@ -9,7 +9,6 @@ const unknownEndpoint = (request, response) => {
 };
 const errorHandler = (error, request, response, next) => {
     logger_1.default.error(error.message);
-    next(error);
 };
 const middleware = {
     unknownEndpoint,

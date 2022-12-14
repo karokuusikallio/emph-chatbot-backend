@@ -35,7 +35,7 @@ messagesRouter.get("/", async (request: Request, response: Response) => {
 
 messagesRouter.post("/", async (request: Request, response: Response) => {
   const token = request.get("auth-token");
-  const { text, sender } = request.body;
+  const { text, sender, createdAt } = request.body;
 
   if (token) {
     const verifiedToken = jwt.verify(
@@ -43,12 +43,13 @@ messagesRouter.post("/", async (request: Request, response: Response) => {
       process.env.JWT_SECRET as string
     ) as VerifiedToken;
 
-    if (verifiedToken && text && sender) {
+    if (verifiedToken && text && sender && createdAt) {
       const messageCreated = await prisma.message.create({
         data: {
           userId: verifiedToken.userId,
           text,
           sender,
+          createdAt,
         },
       });
       return response.status(200).json(messageCreated);

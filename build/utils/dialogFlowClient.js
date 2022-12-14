@@ -33,6 +33,7 @@ function runDialogFlowQuery(query) {
                 languageCode,
             },
         };
+        console.log(request);
         try {
             const response = yield client.detectIntent(request);
             return response;
