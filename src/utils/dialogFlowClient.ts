@@ -7,12 +7,16 @@ async function runDialogFlowQuery(query: string) {
   const agentId = process.env.DIALOGFLOW_AGENT_ID as string;
   const languageCode = "en";
 
-  const client = new SessionsClient({
-    keyFile:
-      process.env.NODE_ENV === "production"
-        ? process.env.DIALOGFLOW_PRIVATE_KEY
-        : "empathetic-chatbot-369609-8dd74fc860c4.json",
-  });
+  const keyFile = JSON.parse(process.env.DIALOGFLOW_PRIVATE_KEY as string);
+
+  const config = {
+    credentials: {
+      private_key: keyFile.private_key,
+      client_email: keyFile.client_email,
+    },
+  };
+
+  const client = new SessionsClient(config);
 
   const sessionId = uuidv4();
   const sessionPath = client.projectLocationAgentSessionPath(
@@ -31,9 +35,6 @@ async function runDialogFlowQuery(query: string) {
       languageCode,
     },
   };
-
-  console.log(request.session);
-  console.log(request.queryInput.text.text);
 
   try {
     const response = await client.detectIntent(request);
