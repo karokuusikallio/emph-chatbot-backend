@@ -34,6 +34,9 @@ async function runDialogFlowQuery(query: string) {
       },
       languageCode,
     },
+    queryParams: {
+      analyzeQueryTextSentiment: true,
+    },
   };
 
   try {
