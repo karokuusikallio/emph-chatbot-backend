@@ -1,7 +1,6 @@
 import { SessionsClient } from "@google-cloud/dialogflow-cx";
-import { v4 as uuidv4 } from "uuid";
 
-async function runDialogFlowQuery(query: string) {
+async function runDialogFlowQuery(query: string, sessionId: string) {
   const projectId = process.env.GOOGLE_PROJECT_ID as string;
   const location = "global";
   const agentId = process.env.DIALOGFLOW_AGENT_ID as string;
@@ -18,7 +17,6 @@ async function runDialogFlowQuery(query: string) {
 
   const client = new SessionsClient(config);
 
-  const sessionId = uuidv4();
   const sessionPath = client.projectLocationAgentSessionPath(
     projectId,
     location,
@@ -33,9 +31,6 @@ async function runDialogFlowQuery(query: string) {
         text: query,
       },
       languageCode,
-    },
-    queryParams: {
-      analyzeQueryTextSentiment: true,
     },
   };
 

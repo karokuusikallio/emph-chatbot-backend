@@ -8,6 +8,7 @@ interface VerifiedToken {
   username: string;
   userId: string;
   issuedAt: number;
+  conversationId: string | null;
 }
 
 userRouter.get("/me", async (request: Request, response: Response) => {
@@ -19,12 +20,21 @@ userRouter.get("/me", async (request: Request, response: Response) => {
       process.env.JWT_SECRET as string
     ) as VerifiedToken;
 
-    return response.status(200).json({
-      userName: verifiedToken.username,
-      userId: verifiedToken.userId,
-      issuedAt: verifiedToken.issuedAt,
-      loggedIn: true,
+    const user = await prisma.user.findUnique({
+      where: {
+        userName: verifiedToken.username,
+      },
     });
+
+    if (user) {
+      const userInfo = {
+        userName: user.userName,
+        conversationId: user.conversationId,
+        loggedIn: true,
+      };
+
+      return response.status(200).json(userInfo);
+    }
   }
 
   return response.status(200).json({ loggedIn: false });

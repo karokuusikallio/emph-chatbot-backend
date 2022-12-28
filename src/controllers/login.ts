@@ -18,7 +18,11 @@ loginRouter.post("/", async (request: Request, response: Response) => {
 
     if (passwordCheck) {
       const authToken = jwt.sign(
-        { username: user.userName, userId: user.id },
+        {
+          username: user.userName,
+          userId: user.id,
+          conversationId: user.conversationId,
+        },
         process.env.JWT_SECRET as string
       );
 
